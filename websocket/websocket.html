@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script>
+    //h5提供的一个websocket对象，不需要任何的包
+    var socket=new WebSocket('ws://localhost:8080/');
+    socket.onopen=function(){
+        socket.send('你好服务器');
+    }
+    socket.onmessage=function(event){
+        console.log(event.data);
+    }
+
+</script>
+</html>
