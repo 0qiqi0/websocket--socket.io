@@ -7,6 +7,7 @@
 var express=require('express');
 var app=express();
 var path=require('path');
+app.use(express.static(__dirname));
 app.get('/',function(req,res){
     res.sendFile(path.join(__dirname,'index.html'));
 });
@@ -14,11 +15,15 @@ app.get('/',function(req,res){
 var server=require('http').createServer(app);
 //websocket握手需借助http
 var io = require('socket.io')(server);
+var clients=[];
 io.on('connection',function(socket){
 //socket代表与某个客户端的连接对象
+    clients.push(socket);
     socket.on('message',function(msg){
-        console.log(msg)
-        socket.send('server:'+msg)
+        //socket.send('server:'+msg)
+        clients.forEach(function(client){
+            client.send(msg);
+        })
     })
 });
 server.listen(80);
