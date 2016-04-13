@@ -41,7 +41,7 @@
 <script>
     window.onload=function(){
         function addMsg(msg){
-            $('#messageUl').append('<li class="list-group-item"><span class="user">'+msg.user+':'+msg.content+'</span></li>');
+            $('#messageUl').append('<li class="list-group-item"><span class="user">'+msg.user+'</span>:'+msg.content+'</span></li>');
 
         }
         var socket=io.connect('/');
@@ -68,7 +68,7 @@
         });
 //绑定的时候元素还不存在，所以要委托body去实现
         $('body').delegate('ul li span','click',function(){
-            $('#txtMsg').val('@'+$(this).text()+'');
+            $('#txtMsg').val('@'+$(this).text()+' ');
         })
     }
 

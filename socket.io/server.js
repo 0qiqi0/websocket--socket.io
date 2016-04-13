@@ -21,6 +21,9 @@ io.on('connection',function(socket){
     socket.send({user:'系统',content:'请输入用户名'});
 //socket代表与某个客户端的连接对象
     //clients.push(socket);
+    //公共的（socket）都放在对象clients中。每个socket都有对应的函数和username
+    //?<span class="user">'+msg.user+':'+msg.content+'</span>cotent过滤不掉，对象clients[toUser]这样用对吗
+    //这样clients.toUser写时失败。
     socket.on('message',function(msg){
         var result=msg.match(/^@(.+)\s(.+)$/); ///s是空格之类的
         if(result){
@@ -28,14 +31,14 @@ io.on('connection',function(socket){
             var toUser=result[1];
             var content=result[2];//第0个是匹配到的字符串，第1个是第一个分组
             if(clients[toUser]){
-                clients[toUser].send({user:username,content:'[私聊]'+content});
+                clients[toUser].send({user:username,content:'[私聊]'+content}); //这里是username
             }else{
                 socket.send({user:'系统',content:'你想私聊的人不在线'});
             }
         }else{
             if(username){
-                for(var s in clients){
-                    clients[s].send({user:username,content:msg});
+                for(var s in clients){  //对对象的循环
+                    clients[s].send({user:username,content:msg}); //s是key，是username
                 }
             }else{
                 username=msg;
